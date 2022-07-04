@@ -1,10 +1,26 @@
-compose-up:
+# to start docker compose
+composeup:
 		docker-compose up
-compose-down:
+
+# to stop socker compose
+composedown:
 		docker-compose down
 
-# useage: make migrate args="<args>"
+# to migrate db , and helper commands
+# usage: make migrate args="<args>"
 migrate:
 		go run ./cmd/migrate $(args)
 
-.PHONT: migrate compose-up compose-down
+# to migrate db to latest bersion
+createdb:
+		go run ./cmd/migrate up
+
+# to drop db completely
+dropdb:
+		go run ./cmd/migrate reset
+
+# to re-setup a clean db
+dbinit:
+		make dropdb && make createdb
+
+.PHONT: migrate composeup composedown createdb dropdb dbinit
