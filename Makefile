@@ -23,4 +23,7 @@ dropdb:
 dbinit:
 		make dropdb && make createdb
 
+sqlc:
+	sqlc generate
+
 .PHONT: migrate composeup composedown createdb dropdb dbinit
