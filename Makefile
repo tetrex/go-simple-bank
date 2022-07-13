@@ -26,4 +26,7 @@ dbinit:
 sqlc:
 	sqlc generate
 
-.PHONT: migrate composeup composedown createdb dropdb dbinit
+test:
+	go test -v -cover -short ./...
+
+.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc
