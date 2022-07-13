@@ -5,13 +5,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"github.com/tetrex/backend-masterclass-go/util"
 )
 
 func TestCreateAccount(t *testing.T) {
 	args := CreateAccountParams{
-		Owner:    "tom",
-		Balance:  100,
-		Currency: "USD",
+		Owner:    util.RandomOwner(),
+		Balance:  util.RandomMoney(),
+		Currency: util.RandomCurrency(),
 	}
 
 	account, err := testQueries.CreateAccount(context.Background(), args)
