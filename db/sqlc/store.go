@@ -69,7 +69,7 @@ func (store *Store) TransferTx(ctx context.Context, args TransferTxParams) (Tran
 
 		fEntry, err := q.CreateEntry(ctx, CreateEntryParams{
 			AccountID: args.FromAccountId,
-			Amount:    args.Amount,
+			Amount:    -args.Amount,
 		})
 		if err != nil {
 			return err
