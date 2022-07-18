@@ -1,34 +1,41 @@
+#!/bin/bash
+
+# colours
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+# ----
+
 declare -p commit_message
-echo "Enter commit message :"
+echo -e "${YELLOW}Enter commit message :${SET}"
 read commit_message
 
 declare -i day
-echo "Enter commit day [dd] :"
+echo -e "${YELLOW}Enter commit day [dd] :${SET}"
 read day
 
 declare -i month
-echo "Enter commit month [mm] :"
+echo -e "${YELLOW}Enter commit month [mm] :${SET}"
 read month
 
 declare -i year
-echo "Enter commit year [yyyy] :"
+echo -e "${YELLOW}Enter commit year [yyyy] :${SET}"
 read year
 
 # exec from here
 # -----
-echo "changed files ::"
+echo -e "${GREEN}changed files ::${SET}"
 git diff --stat HEAD~5 HEAD
-echo "---"
+echo -e "${GREEN}---"
 
-echo "adding all git files to commit [git add -A]"
+echo -e "${GREEN}adding all git files to commit [git add .]${SET}"
 git add .
-echo "---"
+echo -e "${GREEN}---${SET}"
 
-echo "commiting ..."
+echo -e "${GREEN}commiting ...${SET}"
 git commit -m "$commit_message"
-echo "---"
+echo -e "${GREEN}---${SET}"
 
-echo "adjusting time ..."
+echo -e "${GREEN}adjusting time ...${SET}"
 git commit  -m "$commit_message" --amend --date="$month/$day 22:00 $year +0530"
-echo "DONE[OK]"
+echo -e "${GREEN}DONE[OK]${SET}"
 
