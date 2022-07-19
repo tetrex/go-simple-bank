@@ -57,7 +57,7 @@ func (store *Store) TransferTx(ctx context.Context, args TransferTxParams) (Tran
 
 	var result TransferTxResult
 
-	store.execTx(ctx, func(q *Queries) error {
+	err := store.execTx(ctx, func(q *Queries) error {
 		/*
 			transfer Amount from account1 To account2
 			1 : create entry (entry) of -amount for account1
@@ -77,16 +77,13 @@ func (store *Store) TransferTx(ctx context.Context, args TransferTxParams) (Tran
 		result.FromEntry = fEntry
 
 		// -------------------
-		fromAccount, err := q.GetAccount(ctx, args.FromAccountId)
-		if err != nil {
-			return err
-		}
-		fromAccountUpdateArgs := UpdateAccountParams{
-			ID:      args.FromAccountId,
-			Balance: fromAccount.Balance - args.Amount,
+
+		fromAddAccountBalanceArgs := AddAccountBalanceParams{
+			ID:     args.FromAccountId,
+			Amount: -args.Amount,
 		}
 
-		updatedFromAccount, err := q.UpdateAccount(ctx, fromAccountUpdateArgs)
+		updatedFromAccount, err := q.AddAccountBalance(ctx, fromAddAccountBalanceArgs)
 		if err != nil {
 			return err
 		}
@@ -102,16 +99,13 @@ func (store *Store) TransferTx(ctx context.Context, args TransferTxParams) (Tran
 		}
 		result.ToEntry = tEntry
 		// -------------------
-		toAccount, err := q.GetAccount(ctx, args.ToAccountId)
-		if err != nil {
-			return err
-		}
-		toAccountUpdateArgs := UpdateAccountParams{
-			ID:      args.ToAccountId,
-			Balance: toAccount.Balance + args.Amount,
+
+		toAddAccountBalanceArgs := AddAccountBalanceParams{
+			ID:     args.ToAccountId,
+			Amount: args.Amount,
 		}
 
-		updatedToAccount, err := q.UpdateAccount(ctx, toAccountUpdateArgs)
+		updatedToAccount, err := q.AddAccountBalance(ctx, toAddAccountBalanceArgs)
 		if err != nil {
 			return err
 		}
@@ -123,7 +117,7 @@ func (store *Store) TransferTx(ctx context.Context, args TransferTxParams) (Tran
 			Amount:        args.Amount,
 		}
 
-		transfer, err := q.CreateTransfer(context.Background(), transferEntryArgs)
+		transfer, err := q.CreateTransfer(ctx, transferEntryArgs)
 		if err != nil {
 			return err
 		}
@@ -131,5 +125,5 @@ func (store *Store) TransferTx(ctx context.Context, args TransferTxParams) (Tran
 		return nil
 	})
 
-	return result, nil
+	return result, err
 }
