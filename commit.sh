@@ -21,7 +21,7 @@ git diff --stat HEAD~5 HEAD
 echo "---"
 
 echo "adding all git files to commit [git add -A]"
-git add -A
+git add .
 echo "---"
 
 echo "commiting ..."
