@@ -29,4 +29,7 @@ sqlc:
 test:
 	go test -v -cover -short ./...
 
+doc:
+	go run ./cmd/docs/main.go init -g cmd/api/main.go -o .swagger
+
 .PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc
