@@ -32,7 +32,10 @@ test:
 doc:
 	go run ./cmd/docs/main.go init -g cmd/api/main.go -o docs
 
-run:
+start:
 	go run ./cmd/api/main.go
 
-.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run
+run: doc start
+	
+
+.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run start

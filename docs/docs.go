@@ -57,7 +57,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Account"
+                    "v1/Account"
                 ],
                 "summary": "Creates account Of user",
                 "parameters": [
@@ -69,6 +69,44 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/api.CreateAccountRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.OkResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/account/{id}": {
+            "get": {
+                "description": "takes id of user and returns user account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/Account"
+                ],
+                "summary": "Gets User Account",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {

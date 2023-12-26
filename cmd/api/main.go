@@ -33,5 +33,6 @@ func main() {
 	}
 
 	store := db.NewStore(DB)
-	api.NewServer(store)
+	s := api.NewServer(store)
+	s.Start()
 }

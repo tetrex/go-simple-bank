@@ -10,14 +10,6 @@ import (
 
 const alphaSpaceRegexString string = "^[a-zA-Z ]+$"
 
-func Validate(i interface{}) error {
-	validate := validator.New()
-	if err := validate.Struct(i); err != nil {
-		return err
-	}
-	return nil
-}
-
 func NewValidator() *validator.Validate {
 	validate := validator.New()
 	validate.SetTagName("form")

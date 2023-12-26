@@ -20,17 +20,15 @@ type Server struct {
 	validator *validator.Validate
 }
 
-func NewServer(store *db.Store) *Server {
-	router := echo.New()
-	validator := util.NewValidator()
+func NewServer(s *db.Store) *Server {
+	r := echo.New()
+	v := util.NewValidator()
 
 	server := &Server{
-		db:        store,
-		router:    router,
-		validator: validator,
+		db:        s,
+		router:    r,
+		validator: v,
 	}
-
-	server.Start()
 	return server
 }
 
@@ -40,27 +38,20 @@ func (server *Server) Start() {
 	server.router.GET("/", server.health)
 
 	//v1 group
-	v1 := server.router.Group("/v1")
+	v1 := server.router.Group("v1/")
 
 	// swagger docs
-	v1.GET("/docs/*", echoSwagger.WrapHandler)
-
-	//account groups
-	account := v1.Group("account")
+	v1.GET("docs/*", echoSwagger.WrapHandler)
 
 	//accounts
-	account.POST("/", server.createAccount)
-	account.GET("/:id", server.getAccount)
-	account.GET("/", server.listAccounts)
+	v1.POST("account/", server.createAccount)
+	v1.GET("account/:id", server.getAccount)
+	v1.GET("account/", server.listAccounts)
 
 	// -------------
-	s := &http.Server{
-		Addr:    fmt.Sprintf(":%d", 8080),
-		Handler: server.router,
-	}
 
-	log.Println("Starting server " + s.Addr)
-	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	log.Println("Starting server :: " + "8080")
+	if err := server.router.Start(fmt.Sprintf(":%d", 8080)); err != nil && err != http.ErrServerClosed {
 		log.Fatal("Server startup failed")
 	}
 }

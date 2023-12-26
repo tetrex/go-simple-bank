@@ -10,8 +10,8 @@ import (
 )
 
 type CreateAccountRequest struct {
-	Owner    string `json:"owner" binding:"required,owner"`
-	Currency string `json:"currency" binding:"required,currency"`
+	Owner    string `json:"owner" validate:"required,owner"`
+	Currency string `json:"currency" validate:"required,currency"`
 }
 
 // Create Account godoc
@@ -28,10 +28,10 @@ type CreateAccountRequest struct {
 func (s *Server) createAccount(c echo.Context) error {
 	req := new(CreateAccountRequest)
 	if err := c.Bind(req); err != nil {
-
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
-	if err := c.Validate(req); err != nil {
+
+	if err := s.validator.Struct(req); err != nil {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
 
@@ -48,12 +48,35 @@ func (s *Server) createAccount(c echo.Context) error {
 }
 
 type GetAccountRequest struct {
-	ID int64 `uri:"id" binding:"required,min=1"`
+	ID int64 `param:"id" validate:"required,min=1"`
 }
 
+// Create Account godoc
+//
+//	@tags			v1/Account
+//	@summary		Gets User Account
+//	@description	takes id of user and returns user account
+//	@accept			json
+//	@produce		json
+//	@param			id	path		int	true	"User ID"
+//	@success		200	{object}	util.OkResponse
+//	@failure		500	{object}	util.ErrorResponse
+//	@router			/v1/account/{id} [get]
 func (s *Server) getAccount(c echo.Context) error {
+	req := new(GetAccountRequest)
+	if err := c.Bind(req); err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
 
-	return nil
+	if err := s.validator.Struct(req); err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+
+	account, err := s.db.GetAccount(context.Background(), req.ID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+	return c.JSON(http.StatusOK, util.OkResponse{Message: "account", Data: account})
 }
 
 type ListAccountRequest struct {

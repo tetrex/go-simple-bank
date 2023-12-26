@@ -74,5 +74,30 @@ paths:
             $ref: '#/definitions/util.ErrorResponse'
       summary: Creates account Of user
       tags:
-      - Account
+      - v1/Account
+  /v1/account/{id}:
+    get:
+      consumes:
+      - application/json
+      description: takes id of user and returns user account
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.OkResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      summary: Gets User Account
+      tags:
+      - v1/Account
 swagger: "2.0"
