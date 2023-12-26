@@ -2,8 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/tetrex/backend-masterclass-go/api"
 	db "github.com/tetrex/backend-masterclass-go/db/sqlc"
 )
@@ -13,25 +15,23 @@ const (
 	dbSource = "postgresql://root:pass@localhost:5432/db?sslmode=disable"
 )
 
-//	@title			MYAPP API
+//	@title			API
 //	@version		1.0
-//	@description	This is a sample RESTful API with a CRUD
+//	@description	This is a backend api for simple bank
 
-//	@contact.name	Dumindu Madunuwan
-//	@contact.url	https://learning-cloud-native-go.github.io
+//	@contact.name	Tetrex
 
 //	@license.name	MIT License
-//	@license.url	https://github.com/learning-cloud-native-go/myapp/blob/master/LICENSE
 
 // @host		localhost:8080
 // @basePath	/v1
 func main() {
 	conn, err := sql.Open(dbSource, dbSource)
 	if err != nil {
-		log.Fatal("cannot connect to DB")
+		fmt.Println(err)
+		log.Fatal("cannot connect to DB :: main")
 	}
 	store := db.NewStore(conn)
-	server := api.NewServer(store)
+	api.NewServer(store)
 
-	server.Start()
 }

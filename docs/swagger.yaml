@@ -1,0 +1,12 @@
+basePath: /v1
+host: localhost:8080
+info:
+  contact:
+    name: Tetrex
+  description: This is a backend api for simple bank
+  license:
+    name: MIT License
+  title: API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

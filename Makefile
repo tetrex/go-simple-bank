@@ -30,6 +30,9 @@ test:
 	go test -v -cover -short ./...
 
 doc:
-	go run ./cmd/docs/main.go init -g cmd/api/main.go -o .swagger
+	go run ./cmd/docs/main.go init -g cmd/api/main.go -o docs
 
-.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc
+run:
+	go run ./cmd/api/main.go
+
+.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run

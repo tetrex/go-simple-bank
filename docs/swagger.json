@@ -1,0 +1,17 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a backend api for simple bank",
+        "title": "API",
+        "contact": {
+            "name": "Tetrex"
+        },
+        "license": {
+            "name": "MIT License"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/v1",
+    "paths": {}
+}
