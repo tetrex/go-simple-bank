@@ -27,7 +27,7 @@ sqlc:
 	sqlc generate
 
 test:
-	go test -v -cover -short ./...
+	clear && go test -v -cover -short ./...
 
 doc:
 	go run ./cmd/docs/main.go init -g cmd/api/main.go -o docs

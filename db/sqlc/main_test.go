@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"runtime/debug"
 	"testing"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
@@ -14,8 +15,9 @@ var testQueries *Queries
 var testDB *sql.DB
 
 func TestMain(m *testing.M) {
-	config, err := util.LoadConfig()
+	config, err := util.LoadConfig("../..")
 	if err != nil {
+		debug.PrintStack()
 		log.Fatal(err)
 	}
 

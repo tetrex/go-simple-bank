@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"runtime/debug"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -33,9 +34,11 @@ func NewServer(s *db.Store) *Server {
 }
 
 func (server *Server) Start() {
-	config, err := util.LoadConfig()
+	config, err := util.LoadConfig("./")
 	if err != nil {
+		debug.PrintStack()
 		log.Fatal(err)
+
 	}
 
 	// health check api

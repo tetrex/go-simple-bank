@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"runtime/debug"
 
 	"github.com/tetrex/backend-masterclass-go/api"
 	db "github.com/tetrex/backend-masterclass-go/db/sqlc"
@@ -22,8 +23,9 @@ import (
 // @host		localhost:8080
 // @basePath	/
 func main() {
-	config, err := util.LoadConfig()
+	config, err := util.LoadConfig(".")
 	if err != nil {
+		debug.PrintStack()
 		log.Fatal(err)
 	}
 

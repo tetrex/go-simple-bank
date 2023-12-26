@@ -12,11 +12,12 @@ type Config struct {
 	ServerPort int    `mapstructure:"SERVER_PORT"`
 }
 
-func LoadConfig() (Config, error) {
+func LoadConfig(path string) (Config, error) {
 	config := Config{}
 
-	viper.AddConfigPath("/")
-	viper.SetConfigFile("app.env")
+	viper.AddConfigPath(path)
+	viper.SetConfigName("app")
+	viper.SetConfigType("env")
 
 	viper.AutomaticEnv()
 
