@@ -36,6 +36,6 @@ git commit -m "$commit_message"
 echo -e "${GREEN}---${SET}"
 
 echo -e "${GREEN}adjusting time ...${SET}"
-git commit  -m "$commit_message" --amend --date="$month/$day 22:00 $year +0530"
+git GIT_COMMITTER_DATE="$month/$day 22:00 $year +0530" commit  -m "$commit_message" --amend --date="$month/$day 22:00 $year +0530"
 echo -e "${GREEN}DONE[OK]${SET}"
 
