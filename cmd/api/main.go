@@ -24,7 +24,7 @@ const (
 //	@license.name	MIT License
 
 // @host		localhost:8080
-// @basePath	/v1
+// @basePath	/
 func main() {
 	DB, err := sql.Open(dbDriver, dbSource)
 	if err != nil {

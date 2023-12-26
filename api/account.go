@@ -14,6 +14,17 @@ type CreateAccountRequest struct {
 	Currency string `json:"currency" binding:"required,currency"`
 }
 
+// Create Account godoc
+//
+//	@tags			v1/Account
+//	@summary		Creates account Of user
+//	@description	takes input of Owner,Currency , and creates account
+//	@accept			json
+//	@produce		json
+//	@param			body body CreateAccountRequest true "CreateAccountRequest"
+//	@success		200	{object}	util.OkResponse
+//	@failure		500	{object}	util.ErrorResponse
+//	@router			/v1/account/ [post]
 func (s *Server) createAccount(c echo.Context) error {
 	req := new(CreateAccountRequest)
 	if err := c.Bind(req); err != nil {

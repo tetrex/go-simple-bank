@@ -1,4 +1,26 @@
-basePath: /v1
+basePath: /
+definitions:
+  api.CreateAccountRequest:
+    properties:
+      currency:
+        type: string
+      owner:
+        type: string
+    required:
+    - currency
+    - owner
+    type: object
+  util.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  util.OkResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -8,5 +30,49 @@ info:
     name: MIT License
   title: API
   version: "1.0"
-paths: {}
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Gives us Server Time , To check health of server
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.OkResponse'
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: For health check, of server
+      tags:
+      - health
+  /v1/account/:
+    post:
+      consumes:
+      - application/json
+      description: takes input of Owner,Currency , and creates account
+      parameters:
+      - description: CreateAccountRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.OkResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      summary: Creates account Of user
+      tags:
+      - Account
 swagger: "2.0"

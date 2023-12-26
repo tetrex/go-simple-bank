@@ -65,6 +65,16 @@ func (server *Server) Start() {
 	}
 }
 
+// Health godoc
+//
+//	@summary		For health check, of server
+//	@description	Gives us Server Time , To check health of server
+//	@tags			health
+//	@accept			json
+//	@produce		json
+//	@success		200	{object}	util.OkResponse
+//	@failure		500	{object}	error
+//	@router			/ [get]
 func (s *Server) health(c echo.Context) error {
 	return c.JSON(http.StatusOK, util.OkResponse{Message: "server,all good", Data: time.Now().UnixNano()})
 }
