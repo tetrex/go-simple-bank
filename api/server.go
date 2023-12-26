@@ -39,11 +39,11 @@ func (server *Server) Start() {
 	// health check api
 	server.router.GET("/", server.health)
 
-	// swagger docs
-	server.router.GET("/swagger/*", echoSwagger.WrapHandler)
-
 	//v1 group
 	v1 := server.router.Group("/v1")
+
+	// swagger docs
+	v1.GET("/docs/*", echoSwagger.WrapHandler)
 
 	//account groups
 	account := v1.Group("account")

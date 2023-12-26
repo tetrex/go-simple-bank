@@ -2,12 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/tetrex/backend-masterclass-go/api"
 	db "github.com/tetrex/backend-masterclass-go/db/sqlc"
+
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 const (
@@ -26,12 +26,12 @@ const (
 // @host		localhost:8080
 // @basePath	/v1
 func main() {
-	conn, err := sql.Open(dbSource, dbSource)
+	DB, err := sql.Open(dbDriver, dbSource)
 	if err != nil {
-		fmt.Println(err)
-		log.Fatal("cannot connect to DB :: main")
+		log.Fatal("cannot connect to DB")
+		log.Fatal(err)
 	}
-	store := db.NewStore(conn)
-	api.NewServer(store)
 
+	store := db.NewStore(DB)
+	api.NewServer(store)
 }
