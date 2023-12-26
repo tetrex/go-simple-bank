@@ -9,11 +9,7 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose/v3"
-)
-
-const (
-	dialect  = "pgx"
-	dbString = "host=localhost user=root password=pass dbname=db port=5432 sslmode=disable"
+	"github.com/tetrex/backend-masterclass-go/util"
 )
 
 var (
@@ -22,6 +18,12 @@ var (
 )
 
 func main() {
+
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	flags.Usage = usage
 	flags.Parse(os.Args[1:])
 
@@ -33,7 +35,7 @@ func main() {
 
 	command := args[0]
 
-	db, err := goose.OpenDBWithDriver(dialect, dbString)
+	db, err := goose.OpenDBWithDriver(config.DbDriver, config.DbSource)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
