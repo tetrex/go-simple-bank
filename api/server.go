@@ -44,9 +44,9 @@ func (server *Server) Start() {
 	v1.GET("docs/*", echoSwagger.WrapHandler)
 
 	//accounts
-	v1.POST("account/", server.createAccount)
+	v1.POST("account", server.createAccount)
 	v1.GET("account/:id", server.getAccount)
-	v1.GET("account/", server.listAccounts)
+	v1.POST("accounts", server.listAccounts)
 
 	// -------------
 

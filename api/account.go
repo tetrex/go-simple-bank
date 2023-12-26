@@ -80,11 +80,39 @@ func (s *Server) getAccount(c echo.Context) error {
 }
 
 type ListAccountRequest struct {
-	PageID   int32 `form:"page_id" binding:"required,min=1"`
-	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
+	PageID   int32 `json:"page_id" validate:"required,min=1"`
+	PageSize int32 `json:"page_size" validate:"required,min=5,max=10"`
 }
 
+// Create Account godoc
+//
+//	@tags			v1/Account
+//	@summary		Gets List Of User Account
+//	@description	takes pages and pagesize
+//	@accept			json
+//	@produce		json
+//	@param			body body ListAccountRequest true "ListAccountRequest"
+//	@success		200	{object}	util.OkResponse
+//	@failure		500	{object}	util.ErrorResponse
+//	@router			/v1/accounts [post]
 func (s *Server) listAccounts(c echo.Context) error {
+	req := new(ListAccountRequest)
+	if err := c.Bind(req); err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
 
-	return nil
+	if err := s.validator.Struct(req); err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+	args := db.ListAccountsParams{
+		Limit:  req.PageSize,
+		Offset: (req.PageID - 1) * req.PageSize,
+	}
+
+	account, err := s.db.ListAccounts(context.Background(), args)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, util.OkResponse{Message: "accounts", Data: account})
 }

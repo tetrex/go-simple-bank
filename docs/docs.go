@@ -124,6 +124,46 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/accounts": {
+            "post": {
+                "description": "takes pages and pagesize",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/Account"
+                ],
+                "summary": "Gets List Of User Account",
+                "parameters": [
+                    {
+                        "description": "ListAccountRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.ListAccountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.OkResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -139,6 +179,24 @@ const docTemplate = `{
                 },
                 "owner": {
                     "type": "string"
+                }
+            }
+        },
+        "api.ListAccountRequest": {
+            "type": "object",
+            "required": [
+                "page_id",
+                "page_size"
+            ],
+            "properties": {
+                "page_id": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "maximum": 10,
+                    "minimum": 5
                 }
             }
         },
