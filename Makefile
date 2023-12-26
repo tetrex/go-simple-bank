@@ -41,7 +41,6 @@ clean:
 run: doc clean start
 
 mockgen:
-	 mockgen -package mockdb -destination db/mock/mock.go github.com/tetrex/backend-masterclas
-s-go/db/sqlc Store
+	 mockgen -package mockdb -destination db/mock/mock.go github.com/tetrex/backend-masterclass-go/db/sqlc Store
 
 .PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run start clean mockgen
