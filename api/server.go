@@ -16,12 +16,12 @@ import (
 )
 
 type Server struct {
-	db        *db.Store
+	db        db.Store
 	router    *echo.Echo
 	validator *validator.Validate
 }
 
-func NewServer(s *db.Store) *Server {
+func NewServer(s db.Store) *Server {
 	r := echo.New()
 	v := util.NewValidator()
 

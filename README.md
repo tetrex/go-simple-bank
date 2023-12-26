@@ -9,3 +9,12 @@ year : 2022
 ## using DB diagrams
 
 > > <https://dbdiagram.io/>
+
+## req
+
+swag
+mockgen
+
+### mock gen
+
+install mockgen , and use make mockgen

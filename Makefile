@@ -21,7 +21,7 @@ dropdb:
 
 # to re-setup a clean db
 dbinit:
-		make dropdb && make createdb
+	   make dropdb && make createdb
 
 sqlc:
 	sqlc generate
@@ -30,7 +30,7 @@ test:
 	clear && go test -v -cover -short ./...
 
 doc:
-	go run ./cmd/docs/main.go init -g cmd/api/main.go -o docs
+	swag init -g cmd/api/main.go -o docs
 
 start:
 	go run ./cmd/api/main.go
@@ -39,6 +39,9 @@ clean:
 	clear
 
 run: doc clean start
-	
 
-.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run start clean
+mockgen:
+	 mockgen -package mockdb -destination db/mock/mock.go github.com/tetrex/backend-masterclas
+s-go/db/sqlc Store
+
+.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run start clean mockgen
