@@ -35,7 +35,10 @@ doc:
 start:
 	go run ./cmd/api/main.go
 
-run: doc start
+clean:
+	clear
+
+run: doc clean start
 	
 
-.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run start
+.PHONT: migrate composeup composedown createdb dropdb dbinit test sqlc doc run start clean

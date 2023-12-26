@@ -6,13 +6,9 @@ import (
 
 	"github.com/tetrex/backend-masterclass-go/api"
 	db "github.com/tetrex/backend-masterclass-go/db/sqlc"
+	"github.com/tetrex/backend-masterclass-go/util"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
-)
-
-const (
-	dbDriver = "pgx"
-	dbSource = "postgresql://root:pass@localhost:5432/db?sslmode=disable"
 )
 
 //	@title			API
@@ -26,7 +22,12 @@ const (
 // @host		localhost:8080
 // @basePath	/
 func main() {
-	DB, err := sql.Open(dbDriver, dbSource)
+	config, err := util.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	DB, err := sql.Open(config.DbDriver, config.DbSource)
 	if err != nil {
 		log.Fatal("cannot connect to DB")
 		log.Fatal(err)

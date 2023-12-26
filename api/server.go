@@ -33,6 +33,10 @@ func NewServer(s *db.Store) *Server {
 }
 
 func (server *Server) Start() {
+	config, err := util.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// health check api
 	server.router.GET("/", server.health)
@@ -50,8 +54,8 @@ func (server *Server) Start() {
 
 	// -------------
 
-	log.Println("Starting server :: " + "8080")
-	if err := server.router.Start(fmt.Sprintf(":%d", 8080)); err != nil && err != http.ErrServerClosed {
+	log.Printf("Starting server :: %d", config.ServerPort)
+	if err := server.router.Start(fmt.Sprintf(":%d", config.ServerPort)); err != nil && err != http.ErrServerClosed {
 		log.Fatal("Server startup failed")
 	}
 }
