@@ -164,6 +164,46 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/transfer": {
+            "post": {
+                "description": "takes input and transfers money from -\u003e to",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/TransferMoney"
+                ],
+                "summary": "Transfer's money from Acc1 to Acc2",
+                "parameters": [
+                    {
+                        "description": "TransferRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.TransferRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.OkResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -197,6 +237,36 @@ const docTemplate = `{
                     "type": "integer",
                     "maximum": 10,
                     "minimum": 5
+                }
+            }
+        },
+        "api.TransferRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "currency",
+                "from_account_id",
+                "to_account_id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "currency": {
+                    "type": "string",
+                    "enum": [
+                        "USD",
+                        "EUR",
+                        "CAD"
+                    ]
+                },
+                "from_account_id": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "to_account_id": {
+                    "type": "integer",
+                    "minimum": 1
                 }
             }
         },
