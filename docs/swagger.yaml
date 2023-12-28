@@ -10,6 +10,23 @@ definitions:
     - currency
     - owner
     type: object
+  api.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - full_name
+    - password
+    - username
+    type: object
   api.ListAccountRequest:
     properties:
       page_id:
@@ -187,4 +204,30 @@ paths:
       summary: Transfer's money from Acc1 to Acc2
       tags:
       - v1/TransferMoney
+  /v1/user/:
+    post:
+      consumes:
+      - application/json
+      description: returns user newly created user profile
+      parameters:
+      - description: CreateUserRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.OkResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      summary: Creates user profile
+      tags:
+      - v1/User
 swagger: "2.0"

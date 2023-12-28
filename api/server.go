@@ -57,6 +57,9 @@ func (server *Server) Start() {
 
 	//transfer
 	v1.POST("transfer", server.createTransfer)
+
+	//user
+	v1.POST("user", server.createUser)
 	// -------------
 
 	log.Printf("Starting server :: %d", config.ServerPort)
