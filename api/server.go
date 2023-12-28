@@ -75,7 +75,7 @@ func (server *Server) Start() {
 //	@tags			health
 //	@accept			json
 //	@produce		json
-//	@success		200	{object}	util.OkResponse
+//	@success		200	{object}	util.OkResponse{data=int64}
 //	@failure		500	{object}	error
 //	@router			/ [get]
 func (s *Server) health(c echo.Context) error {

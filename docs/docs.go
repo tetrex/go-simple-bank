@@ -37,7 +37,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.OkResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util.OkResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "500": {
@@ -75,7 +87,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.OkResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util.OkResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Account"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "500": {
@@ -113,7 +137,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.OkResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util.OkResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.Account"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "500": {
@@ -153,7 +189,22 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.OkResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util.OkResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/db.Account"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "500": {
@@ -193,7 +244,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.OkResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util.OkResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/db.TransferTxResult"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "500": {
@@ -233,7 +296,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.OkResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util.OkResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/api.userResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "500": {
@@ -331,6 +406,105 @@ const docTemplate = `{
                 "to_account_id": {
                     "type": "integer",
                     "minimum": 1
+                }
+            }
+        },
+        "api.userResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "password_changed_at": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "db.Account": {
+            "type": "object",
+            "properties": {
+                "balance": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "owner": {
+                    "type": "string"
+                }
+            }
+        },
+        "db.Entry": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "description": "can be negative or positive",
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "db.Transfer": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "must be positive",
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "from_account_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "to_account_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "db.TransferTxResult": {
+            "type": "object",
+            "properties": {
+                "from_account": {
+                    "$ref": "#/definitions/db.Account"
+                },
+                "from_entry": {
+                    "$ref": "#/definitions/db.Entry"
+                },
+                "to_account": {
+                    "$ref": "#/definitions/db.Account"
+                },
+                "to_entry": {
+                    "$ref": "#/definitions/db.Entry"
+                },
+                "transfer": {
+                    "$ref": "#/definitions/db.Transfer"
                 }
             }
         },

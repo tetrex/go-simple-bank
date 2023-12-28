@@ -25,7 +25,7 @@ type TransferRequest struct {
 //	@accept			json
 //	@produce		json
 //	@param			body body TransferRequest true "TransferRequest"
-//	@success		200	{object}	util.OkResponse
+//	@success		200	{object}	util.OkResponse{data=db.TransferTxResult}
 //	@failure		500	{object}	util.ErrorResponse
 //	@router			/v1/transfer [post]
 func (s *Server) createTransfer(c echo.Context) error {

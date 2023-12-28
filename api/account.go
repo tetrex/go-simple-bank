@@ -22,7 +22,7 @@ type CreateAccountRequest struct {
 //	@accept			json
 //	@produce		json
 //	@param			body body CreateAccountRequest true "CreateAccountRequest"
-//	@success		200	{object}	util.OkResponse
+//	@success		200	{object}	util.OkResponse{data=db.Account}
 //	@failure		500	{object}	util.ErrorResponse
 //	@router			/v1/account/ [post]
 func (s *Server) createAccount(c echo.Context) error {
@@ -59,7 +59,7 @@ type GetAccountRequest struct {
 //	@accept			json
 //	@produce		json
 //	@param			id	path		int	true	"User ID"
-//	@success		200	{object}	util.OkResponse
+//	@success		200	{object}	util.OkResponse{data=db.Account}
 //	@failure		500	{object}	util.ErrorResponse
 //	@router			/v1/account/{id} [get]
 func (s *Server) getAccount(c echo.Context) error {
@@ -92,7 +92,7 @@ type ListAccountRequest struct {
 //	@accept			json
 //	@produce		json
 //	@param			body body ListAccountRequest true "ListAccountRequest"
-//	@success		200	{object}	util.OkResponse
+//	@success		200	{object}	util.OkResponse{data=[]db.Account}
 //	@failure		500	{object}	util.ErrorResponse
 //	@router			/v1/accounts [post]
 func (s *Server) listAccounts(c echo.Context) error {
