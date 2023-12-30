@@ -59,7 +59,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/account/": {
+        "/v1/account": {
             "post": {
                 "description": "takes input of Owner,Currency , and creates account",
                 "consumes": [
@@ -216,6 +216,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/login": {
+            "post": {
+                "description": "returns accessToken",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/login"
+                ],
+                "summary": "logs in user",
+                "parameters": [
+                    {
+                        "description": "loginUserRequest",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.loginUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util.OkResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/api.loginUserResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/transfer": {
             "post": {
                 "description": "takes input and transfers money from -\u003e to",
@@ -268,7 +320,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/user/": {
+        "/v1/user": {
             "post": {
                 "description": "returns user newly created user profile",
                 "consumes": [
@@ -406,6 +458,33 @@ const docTemplate = `{
                 "to_account_id": {
                     "type": "integer",
                     "minimum": 1
+                }
+            }
+        },
+        "api.loginUserRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.loginUserResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/api.userResponse"
                 }
             }
         },

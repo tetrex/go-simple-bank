@@ -62,6 +62,24 @@ definitions:
     - from_account_id
     - to_account_id
     type: object
+  api.loginUserRequest:
+    properties:
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  api.loginUserResponse:
+    properties:
+      access_token:
+        type: string
+      user:
+        $ref: '#/definitions/api.userResponse'
+    type: object
   api.userResponse:
     properties:
       created_at:
@@ -171,7 +189,7 @@ paths:
       summary: For health check, of server
       tags:
       - health
-  /v1/account/:
+  /v1/account:
     post:
       consumes:
       - application/json
@@ -265,6 +283,37 @@ paths:
       summary: Gets List Of User Account
       tags:
       - v1/Account
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: returns accessToken
+      parameters:
+      - description: loginUserRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.loginUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/util.OkResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/api.loginUserResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      summary: logs in user
+      tags:
+      - v1/login
   /v1/transfer:
     post:
       consumes:
@@ -296,7 +345,7 @@ paths:
       summary: Transfer's money from Acc1 to Acc2
       tags:
       - v1/TransferMoney
-  /v1/user/:
+  /v1/user:
     post:
       consumes:
       - application/json

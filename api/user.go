@@ -45,7 +45,7 @@ type CreateUserRequest struct {
 //	@param			body body CreateUserRequest true "CreateUserRequest"
 //	@success		200	{object}	util.OkResponse{data=userResponse}
 //	@failure		500	{object}	util.ErrorResponse
-//	@router			/v1/user/ [post]
+//	@router			/v1/user [post]
 func (s *Server) createUser(c echo.Context) error {
 	req := new(CreateUserRequest)
 	if err := c.Bind(req); err != nil {
@@ -73,4 +73,57 @@ func (s *Server) createUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
 	return c.JSON(http.StatusOK, util.OkResponse{Message: "user profile created successfully", Data: newUserResponse(user)})
+}
+
+type loginUserRequest struct {
+	Username string `json:"username" binding:"required,alphanum"`
+	Password string `json:"password" binding:"required,min=6"`
+}
+
+type loginUserResponse struct {
+	AccessToken string       `json:"access_token"`
+	User        userResponse `json:"user"`
+}
+
+// Login godoc
+//
+//	@tags			v1/login
+//	@summary		logs in user
+//	@description	returns accessToken
+//	@accept			json
+//	@produce		json
+//	@param			body body loginUserRequest true "loginUserRequest"
+//	@success		200	{object}	util.OkResponse{data=loginUserResponse}
+//	@failure		500	{object}	util.ErrorResponse
+//	@router			/v1/login [post]
+func (server *Server) loginUser(c echo.Context) error {
+	var req loginUserRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+
+	user, err := server.db.GetUser(context.Background(), req.Username)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+
+	err = util.CheckPassword(req.Password, user.HashedPassword)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+
+	accessToken, err := server.tokenMaker.CreateToken(
+		user.Username,
+		server.config.AccessTokenDuration,
+	)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+
+	}
+
+	rsp := loginUserResponse{
+		AccessToken: accessToken,
+		User:        newUserResponse(user),
+	}
+	return c.JSON(http.StatusOK, util.OkResponse{Message: "user profile created successfully", Data: rsp})
 }

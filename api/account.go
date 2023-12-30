@@ -24,7 +24,7 @@ type CreateAccountRequest struct {
 //	@param			body body CreateAccountRequest true "CreateAccountRequest"
 //	@success		200	{object}	util.OkResponse{data=db.Account}
 //	@failure		500	{object}	util.ErrorResponse
-//	@router			/v1/account/ [post]
+//	@router			/v1/account [post]
 func (s *Server) createAccount(c echo.Context) error {
 	req := new(CreateAccountRequest)
 	if err := c.Bind(req); err != nil {
