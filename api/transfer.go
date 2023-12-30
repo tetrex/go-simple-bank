@@ -22,6 +22,9 @@ type TransferRequest struct {
 //	@tags			v1/TransferMoney
 //	@summary		Transfer's money from Acc1 to Acc2
 //	@description	takes input and transfers money from -> to
+//
+// @Security ApiKeyAuth
+//
 //	@accept			json
 //	@produce		json
 //	@param			body body TransferRequest true "TransferRequest"

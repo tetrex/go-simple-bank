@@ -57,12 +57,12 @@ func (server *Server) Start() {
 	v1.POST("login", server.loginUser)
 
 	//accounts
-	v1.POST("account", server.createAccount)
-	v1.GET("account/:id", server.getAccount)
-	v1.POST("accounts", server.listAccounts)
+	v1.POST("account", server.createAccount, authMiddleware(server.tokenMaker))
+	v1.GET("account/:id", server.getAccount, authMiddleware(server.tokenMaker))
+	v1.POST("accounts", server.listAccounts, authMiddleware(server.tokenMaker))
 
 	//transfer
-	v1.POST("transfer", server.createTransfer)
+	v1.POST("transfer", server.createTransfer, authMiddleware(server.tokenMaker))
 
 	//user
 	v1.POST("user", server.createUser)

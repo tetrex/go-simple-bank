@@ -15,11 +15,12 @@ import (
 //	@title			API
 //	@version		1.0
 //	@description	This is a backend api for simple bank
-
 //	@contact.name	Tetrex
-
 //	@license.name	MIT License
-
+//
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 // @host		localhost:8080
 // @basePath	/
 func main() {

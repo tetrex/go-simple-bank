@@ -11,8 +11,6 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
-    "basePath": "/",
     "paths": {
         "/": {
             "get": {
@@ -55,6 +53,11 @@
         },
         "/v1/account": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes input of Owner,Currency , and creates account",
                 "consumes": [
                     "application/json"
@@ -107,6 +110,11 @@
         },
         "/v1/account/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes id of user and returns user account",
                 "consumes": [
                     "application/json"
@@ -157,6 +165,11 @@
         },
         "/v1/accounts": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes pages and pagesize",
                 "consumes": [
                     "application/json"
@@ -264,6 +277,11 @@
         },
         "/v1/transfer": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes input and transfers money from -\u003e to",
                 "consumes": [
                     "application/json"
@@ -597,6 +615,13 @@
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

@@ -61,6 +61,11 @@ const docTemplate = `{
         },
         "/v1/account": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes input of Owner,Currency , and creates account",
                 "consumes": [
                     "application/json"
@@ -113,6 +118,11 @@ const docTemplate = `{
         },
         "/v1/account/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes id of user and returns user account",
                 "consumes": [
                     "application/json"
@@ -163,6 +173,11 @@ const docTemplate = `{
         },
         "/v1/accounts": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes pages and pagesize",
                 "consumes": [
                     "application/json"
@@ -270,6 +285,11 @@ const docTemplate = `{
         },
         "/v1/transfer": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "takes input and transfers money from -\u003e to",
                 "consumes": [
                     "application/json"
@@ -604,14 +624,21 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
-	BasePath:         "/",
+	Host:             "",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "API",
 	Description:      "This is a backend api for simple bank",

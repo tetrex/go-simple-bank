@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   api.CreateAccountRequest:
     properties:
@@ -156,7 +155,6 @@ definitions:
       message:
         type: string
     type: object
-host: localhost:8080
 info:
   contact:
     name: Tetrex
@@ -217,6 +215,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Creates account Of user
       tags:
       - v1/Account
@@ -247,6 +247,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Gets User Account
       tags:
       - v1/Account
@@ -280,6 +282,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Gets List Of User Account
       tags:
       - v1/Account
@@ -342,6 +346,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Transfer's money from Acc1 to Acc2
       tags:
       - v1/TransferMoney
@@ -376,4 +382,9 @@ paths:
       summary: Creates user profile
       tags:
       - v1/User
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

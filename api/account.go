@@ -19,6 +19,9 @@ type CreateAccountRequest struct {
 //	@tags			v1/Account
 //	@summary		Creates account Of user
 //	@description	takes input of Owner,Currency , and creates account
+//
+// @Security ApiKeyAuth
+//
 //	@accept			json
 //	@produce		json
 //	@param			body body CreateAccountRequest true "CreateAccountRequest"
@@ -56,6 +59,9 @@ type GetAccountRequest struct {
 //	@tags			v1/Account
 //	@summary		Gets User Account
 //	@description	takes id of user and returns user account
+//
+// @Security ApiKeyAuth
+//
 //	@accept			json
 //	@produce		json
 //	@param			id	path		int	true	"User ID"
@@ -89,6 +95,9 @@ type ListAccountRequest struct {
 //	@tags			v1/Account
 //	@summary		Gets List Of User Account
 //	@description	takes pages and pagesize
+//
+// @Security ApiKeyAuth
+//
 //	@accept			json
 //	@produce		json
 //	@param			body body ListAccountRequest true "ListAccountRequest"
