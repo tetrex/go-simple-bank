@@ -2,15 +2,16 @@ package api
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	db "github.com/tetrex/backend-masterclass-go/db/sqlc"
+	"github.com/tetrex/backend-masterclass-go/token"
 	"github.com/tetrex/backend-masterclass-go/util"
 )
 
 type CreateAccountRequest struct {
-	Owner    string `json:"owner" validate:"required,owner"`
 	Currency string `json:"currency" validate:"required,currency"`
 }
 
@@ -38,8 +39,10 @@ func (s *Server) createAccount(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
 
+	authPayload := c.Get(authorizationPayloadKey).(*token.Payload)
+
 	args := db.CreateAccountParams{
-		Owner:    req.Owner,
+		Owner:    authPayload.Username,
 		Currency: req.Currency,
 		Balance:  0,
 	}
@@ -82,6 +85,13 @@ func (s *Server) getAccount(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
+
+	authPayload := c.Get(authorizationPayloadKey).(*token.Payload)
+	if account.Owner != authPayload.Username {
+		err := errors.New("account doesn't belong to the authenticated user")
+		return c.JSON(http.StatusUnauthorized, util.ErrorResponse{Error: err.Error()})
+	}
+
 	return c.JSON(http.StatusOK, util.OkResponse{Message: "account", Data: account})
 }
 
