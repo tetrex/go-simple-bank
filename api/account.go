@@ -123,7 +123,10 @@ func (s *Server) listAccounts(c echo.Context) error {
 	if err := s.validator.Struct(req); err != nil {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
+	authPayload := c.Get(authorizationPayloadKey).(*token.Payload)
+
 	args := db.ListAccountsParams{
+		Owner:  authPayload.Username,
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}

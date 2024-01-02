@@ -2,11 +2,13 @@ package api
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	db "github.com/tetrex/backend-masterclass-go/db/sqlc"
+	"github.com/tetrex/backend-masterclass-go/token"
 	"github.com/tetrex/backend-masterclass-go/util"
 )
 
@@ -41,10 +43,18 @@ func (s *Server) createTransfer(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
 
-	if err := s.validAccount(req.FromAccountId, req.Currency); err != nil {
+	fromAccount, err := s.validAccount(req.FromAccountId, req.Currency)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
-	if err := s.validAccount(req.ToAccountId, req.Currency); err != nil {
+
+	authPayload := c.Get(authorizationPayloadKey).(*token.Payload)
+	if fromAccount.Owner != authPayload.Username {
+		err := errors.New("from account doesn't belong to the authenticated user")
+		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
+	}
+
+	if _, err := s.validAccount(req.ToAccountId, req.Currency); err != nil {
 		return c.JSON(http.StatusBadRequest, util.ErrorResponse{Error: err.Error()})
 	}
 
@@ -60,17 +70,16 @@ func (s *Server) createTransfer(c echo.Context) error {
 	return c.JSON(http.StatusOK, util.OkResponse{Message: "transfer successful", Data: result})
 }
 
-func (s *Server) validAccount(accountID int64, currency string) error {
+func (s *Server) validAccount(accountID int64, currency string) (db.Account, error) {
 	account, err := s.db.GetAccount(context.Background(), accountID)
 	if err != nil {
-
-		return err
+		return account, err
 	}
 
 	if account.Currency != currency {
 		err := fmt.Errorf("account [%d] currency mismatch: %s vs %s", account.ID, account.Currency, currency)
-		return err
+		return account, err
 	}
 
-	return nil
+	return account, err
 }
